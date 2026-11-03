@@ -24,7 +24,7 @@ ENV UV_LINK_MODE=copy \
 
 # コンテナのシェル設定（エイリアス＋ git ブランチ表示プロンプト）を焼き込む。
 # VS Code はホストの ~/.gitconfig は自動コピーするが ~/.bashrc は持ち込まないため、ここで入れる。
-COPY shell-rc.sh /tmp/shell-rc.sh
+COPY --chmod=644 shell-rc.sh /tmp/shell-rc.sh
 RUN cat /tmp/shell-rc.sh >> /etc/bash.bashrc && rm /tmp/shell-rc.sh
 
 WORKDIR /workspace
