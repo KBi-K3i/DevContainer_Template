@@ -1,0 +1,146 @@
+{
+  // --- Python / 型チェック（Pylance = Pyright エンジン） ---
+  "python.defaultInterpreterPath": "/workspace/.venv/bin/python",
+  "python.analysis.typeCheckingMode": "strict",
+  "python.analysis.autoImportCompletions": true,
+  "python.analysis.inlayHints.functionReturnTypes": true,
+  "python.analysis.inlayHints.variableTypes": true,
+
+  // --- Ruff を Python の既定フォーマッタに（保存時に整形＋import整理） ---
+  "[python]": {
+    "editor.defaultFormatter": "charliermarsh.ruff",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll.ruff": "explicit",
+      "source.organizeImports.ruff": "explicit"
+    }
+  },
+
+  // --- 検索・監視の除外＝VSCode 軽量化 ---
+  "search.followSymlinks": false,
+  "search.exclude": {
+    "**/.venv": true,
+    "**/.git": true,
+    "**/__pycache__": true,
+    "**/.ruff_cache": true,
+    "**/.mypy_cache": true,
+    "**/.pytest_cache": true,
+    "**/*.db": true
+  },
+  "files.watcherExclude": {
+    "**/.venv/**": true,
+    "**/.git/**": true,
+    "**/__pycache__/**": true,
+    "**/.ruff_cache/**": true,
+    "**/.mypy_cache/**": true,
+    "**/.pytest_cache/**": true
+  },
+
+  // --- スペルチェック（cSpell）の設定は repo 直下の cspell.json に外出し ---
+
+  // --- errorlens / markdownlint / autoDocstring ---
+  "errorLens.enabledDiagnosticLevels": ["error", "warning", "info"],
+  "markdownlint.config": {
+    "MD013": false,
+    "MD033": false,
+    "MD041": false
+  },
+  "autoDocstring.docstringFormat": "google",
+
+  // --- resourcemonitor（ステータスバーに CPU使用率・メモリのみ） ---
+  "resmon.show.cpuusage": true,
+  "resmon.show.mem": true,
+  "resmon.show.cpufreq": false,
+  "resmon.show.battery": false,
+  "resmon.show.disk": false,
+
+  // --- インデント/括弧を6段階で色分け（ネイティブ・拡張不要） ---
+  "editor.guides.indentation": true,
+  "editor.guides.highlightActiveIndentation": true,
+  "editor.bracketPairColorization.enabled": true,
+  "editor.guides.bracketPairs": "active",
+  "workbench.colorCustomizations": {
+    "editorIndentGuide.background1": "#F8766D55",
+    "editorIndentGuide.background2": "#C49A0055",
+    "editorIndentGuide.background3": "#53B40055",
+    "editorIndentGuide.background4": "#00C0AF55",
+    "editorIndentGuide.background5": "#00A5FF55",
+    "editorIndentGuide.background6": "#E76BF355",
+    "editorIndentGuide.activeBackground1": "#F8766DBB",
+    "editorIndentGuide.activeBackground2": "#C49A00BB",
+    "editorIndentGuide.activeBackground3": "#53B400BB",
+    "editorIndentGuide.activeBackground4": "#00C0AFBB",
+    "editorIndentGuide.activeBackground5": "#00A5FFBB",
+    "editorIndentGuide.activeBackground6": "#E76BF3BB"
+  },
+
+  // --- commit-message-editor（Conventional Commits を網羅） ---
+  "commit-message-editor.view.defaultType": "form",
+  "commit-message-editor.view.showRecentCommits": true,
+  "commit-message-editor.tokens": [
+    {
+      "label": "種類",
+      "name": "type",
+      "type": "enum",
+      "description": "変更の種類（Conventional Commits）",
+      "options": [
+        { "label": "feat",     "description": "新機能" },
+        { "label": "fix",      "description": "バグ修正" },
+        { "label": "docs",     "description": "ドキュメントのみ" },
+        { "label": "style",    "description": "整形（空白・セミコロン等・動作不変）" },
+        { "label": "refactor", "description": "リファクタ（機能変更なし）" },
+        { "label": "perf",     "description": "性能改善" },
+        { "label": "test",     "description": "テストの追加・修正" },
+        { "label": "build",    "description": "ビルド・依存（uv 等）" },
+        { "label": "ci",       "description": "CI 設定" },
+        { "label": "chore",    "description": "雑務（本番コード変更なし）" },
+        { "label": "revert",   "description": "以前のコミットを戻す" }
+      ]
+    },
+    {
+      "label": "スコープ",
+      "name": "scope",
+      "type": "text",
+      "description": "影響範囲（任意。例: api, domain, adapter）",
+      "prefix": "(",
+      "suffix": ")"
+    },
+    {
+      "label": "要約",
+      "name": "description",
+      "type": "text",
+      "description": "要約（命令形・50字以内）"
+    },
+    {
+      "label": "本文",
+      "name": "body",
+      "type": "text",
+      "description": "本文（なぜ・何を）",
+      "multiline": true,
+      "lines": 5,
+      "maxLines": 10
+    },
+    {
+      "label": "破壊的変更",
+      "name": "breaking_change",
+      "type": "boolean",
+      "description": "破壊的変更があるか（チェックで本文に BREAKING CHANGE: を付与）",
+      "value": "BREAKING CHANGE: ",
+      "default": false
+    },
+    {
+      "label": "フッター",
+      "name": "footer",
+      "type": "text",
+      "description": "フッター（例: Closes #123）",
+      "multiline": true
+    }
+  ],
+  "commit-message-editor.dynamicTemplate": [
+    "{type}{scope}: {description}",
+    "",
+    "{body}",
+    "",
+    "{breaking_change}{footer}"
+  ]
+}

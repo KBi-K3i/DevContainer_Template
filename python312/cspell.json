@@ -1,0 +1,40 @@
+{
+  "version": "0.2",
+  "language": "en",
+  "dictionaryDefinitions": [
+    { "name": "project-words", "path": "./project-words.txt", "addWords": true }
+  ],
+  "dictionaries": ["project-words"],
+  "words": [
+    "pyproject",
+    "venv",
+    "devcontainer",
+    "dockerfile",
+    "pytest",
+    "mypy",
+    "ruff",
+    "astral",
+    "uvx",
+    "pylance",
+    "pyright",
+    "dotenv",
+    "toml",
+    "autodocstring",
+    "resmon",
+    "markdownlint",
+    "pydantic",
+    "sqlite",
+    "zoneinfo"
+  ],
+  "ignorePaths": [
+    ".venv",
+    "**/*.db",
+    "uv.lock",
+    ".git",
+    "**/__pycache__",
+    "**/.ruff_cache",
+    "node_modules",
+    "**/*.lock",
+    "project-words.txt"
+  ]
+}

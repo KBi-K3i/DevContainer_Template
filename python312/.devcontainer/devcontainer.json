@@ -1,0 +1,37 @@
+{
+  "name": "python-uv-devcontainer",
+  "build": { "dockerfile": "Dockerfile" },
+  "runArgs": ["--memory=16g"],
+  "workspaceFolder": "/workspace",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "ms-python.debugpy",
+        "charliermarsh.ruff",
+        "njpwerner.autodocstring",
+        "usernamehw.errorlens",
+        "streetsidesoftware.code-spell-checker",
+        "DmitryDorofeev.empty-indent",
+        "mhutchie.git-graph",
+        "waderyan.gitblame",
+        "adam-bender.commit-message-editor",
+        "DavidAnson.vscode-markdownlint",
+        "shd101wyy.markdown-preview-enhanced",
+        "bpruitt-goddard.mermaid-markdown-syntax-highlighting",
+        "yy0931.vscode-sqlite3-editor",
+        "MS-CEINTL.vscode-language-pack-ja",
+        "mutantdino.resourcemonitor",
+        "redhat.vscode-yaml",
+        "tamasfe.even-better-toml",
+        "mikestead.dotenv"
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "${containerWorkspaceFolder}/.venv/bin/python"
+      }
+    }
+  },
+  "postCreateCommand": "uv sync"
+}
