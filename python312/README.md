@@ -9,7 +9,8 @@ WSL + Docker + VS Code Dev Containers による、再現可能な Python 3.12 �
 python312/
 ├── .devcontainer/
 │   ├── devcontainer.json   # VS Code のコンテナ設定（拡張・/workspace マウント・メモリ16GB・postCreate: uv sync）
-│   └── Dockerfile          # python:3.12-slim + uv + git/ssh/curl/sqlite3 + JST/日本語ロケール
+│   ├── Dockerfile          # python:3.12-slim + uv + git/ssh/curl/sqlite3 + JST/日本語ロケール + シェル設定の焼き込み
+│   └── shell-rc.sh         # コンテナのシェル設定（alias ＋ git ブランチ表示プロンプト。Dockerfile が /etc/bash.bashrc へ追記）
 ├── .vscode/
 │   ├── settings.json       # Pylance strict・Ruff 既定フォーマッタ・検索除外・インデント色 ほか
 │   └── launch.json         # デバッグ構成（現在のファイル / pytest）
@@ -25,7 +26,7 @@ python312/
 
 ## 使い方
 
-前提：WSL(Ubuntu) + Docker + VS Code（Dev Containers 拡張）＋ GitHub SSH。git の名前/メールや SSH 鍵は**ホスト側（WSL）で一度設定**すれば、VS Code が起動時に `~/.gitconfig` をコンテナへ自動コピー・SSH エージェントを転送するので、コンテナ内の git でもそのまま使える（ホスト設定は、リポジトリ直下の [README](../README.md) 参照）。
+前提：WSL(Ubuntu) + Docker + VS Code（Dev Containers 拡張）＋ GitHub SSH。git の名前/メールや SSH 鍵は**ホスト側（WSL）で一度設定**すれば、VS Code が起動時に `~/.gitconfig` をコンテナへ自動コピー・SSH エージェントを転送するので、コンテナ内の git でもそのまま使える（ホスト設定は、リポジトリ直下の [README](../README.md) 参照）。シェルのプロンプト/alias は、VS Code が持ち込まないぶん **Dockerfile でコンテナに焼き込み済み**（`.devcontainer/shell-rc.sh`）。
 
 1. リポジトリを clone し、この `python312/` フォルダを VS Code で開く：
    ```bash
@@ -48,6 +49,7 @@ python312/
 - 依存：`uv add <pkg>`（本番）／`uv add --dev <pkg>`（開発）。`pyproject.toml` と `uv.lock` が更新されるので両方コミットする。
 - Python 版：`Dockerfile` の `FROM python:3.x-slim` と `pyproject.toml` の `requires-python` を合わせる。別バージョンは `python3xx/` を横に作る。
 - 拡張機能：`devcontainer.json` の `customizations.vscode.extensions`（用途依存＝自由に）。
+- シェル設定：`.devcontainer/shell-rc.sh` を編集（alias やプロンプト）。Dockerfile が `/etc/bash.bashrc` に焼き込む。
 - テスト：`software_test/unit`・`software_test/integration` に置く（`pyproject.toml` の `testpaths`）。
 - CI：GitHub Actions で `uv sync` → `uv run ruff check` → `uv run mypy` → `uv run pytest`。
 

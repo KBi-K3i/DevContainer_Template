@@ -22,7 +22,7 @@ VS Code で開くのは**各テンプレのフォルダ**（例 `python312/`）�
 
 Windows に **WSL(Ubuntu)** ／ **コンテナエンジン（Docker か Podman）** ／ **VS Code ＋ Dev Containers 拡張** ／ **GitHub への SSH 鍵**。
 
-### Git の名前・鍵はコンテナに同梱しない（ホストから自動共有される）
+### ホスト設定はどうコンテナに入るか（gitconfig と bashrc の違い）
 
 VS Code Dev Containers は、起動時に**ホストの `~/.gitconfig` をコンテナへ自動コピー**し、**ローカルの SSH エージェントを自動フォワード**する（HTTPS のクレデンシャルヘルパも共有）。そのため **git の名前/メールや SSH 鍵をテンプレに同梱する必要はない**——ホスト側（WSL）で一度設定しておけば、コンテナ内の git でもそのまま使える。
 
@@ -35,6 +35,8 @@ git config --global init.defaultBranch main   # 新規リポジトリの既定�
 git config --global push.default current       # 引数なし push は現在ブランチを同名で送る
 git config --global fetch.prune true           # 削除済みリモートブランチの追跡を自動掃除
 ```
+
+いっぽう **シェルのプロンプトや alias（`~/.bashrc` に書くもの）は、VS Code がコンテナへ持ち込まない**。そこで各テンプレ（例 `python312/`）は、これを **Dockerfile でコンテナの `/etc/bash.bashrc` に焼き込む**（`.devcontainer/shell-rc.sh` の内容）。だから**コンテナ内のシェルでも同じプロンプト/alias が効く**——「自動共有される gitconfig」と「イメージに焼き込む bashrc」で入れ方が違う点に注意。
 
 ### コンテナエンジン：Docker か Podman か
 
