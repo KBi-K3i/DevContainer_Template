@@ -1,0 +1,2 @@
+# DevContainer_Template
+職場の異動などで環境構築する際の、DevContainerのサンプル。
