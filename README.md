@@ -12,31 +12,29 @@ clone して対象バージョンのフォルダ（例 `python312/`）を VS Cod
 
 （将来 `python313/` など他バージョンを横に追加予定。各フォルダが自己完結したテンプレート。）
 
-## 「開くフォルダ」と「ビルドコンテキスト」はどこか
+## 開くフォルダとビルドコンテキスト
 
-- VS Code で開くのは**各テンプレのフォルダ**（例 `python312/`）。その中の `.devcontainer/` を VS Code が読み、`.devcontainer/Dockerfile` から **ビルドコンテキスト ＝ `python312/`** としてイメージを作り、`python312/` を `/workspace` にマウントしてコンテナへ入る。
-- つまり**ビルドコンテキストはリポジトリ直下ではなく、開いた個別フォルダ（`python312/`）**。リポジトリ直下の `README.md` / `gitconfig` / `bashrc` はコンテナには入らない（下記のとおり、これは意図どおり）。
-
-## ホスト側セットアップ samples（リポジトリ直下・バージョン非依存・一度だけ）
-
-`gitconfig` と `bashrc` は **WSL(Ubuntu) ホストの `~/.gitconfig` / `~/.bashrc` に適用する「ホスト設定のサンプル」**。コンテナの中身（ビルドコンテキスト）ではないので、**あえて各テンプレフォルダの外＝リポジトリ直下**に置いている（全バージョンで共通に使えるように）。
-
-- [`gitconfig`](gitconfig) … `~/.gitconfig` のサンプル。**`name` / `email` を記入**してから使う：
-  ```bash
-  cp gitconfig ~/.gitconfig   # その後 name/email を記入
-  ```
-  設定：`init.defaultBranch=main`（新規リポジトリの既定ブランチ）／`push.default=current`（引数なし push は現在ブランチを同名で送る）／`fetch.prune=true`（削除済みリモートブランチの追跡を自動掃除）／`core.editor=vim`。
-- [`bashrc`](bashrc) … `~/.bashrc` 追記サンプル（alias ＋ Git ブランチ表示プロンプト）：
-  ```bash
-  sudo apt install -y git bash-completion   # git-prompt に必要
-  cat bashrc >> ~/.bashrc && source ~/.bashrc
-  ```
+VS Code で開くのは**各テンプレのフォルダ**（例 `python312/`）。その中の `.devcontainer/` を VS Code が読み、`.devcontainer/Dockerfile` から **ビルドコンテキスト ＝ `python312/`** としてイメージを作り、`python312/` を `/workspace` にマウントしてコンテナへ入る。コマンドパレット（F1）→ `Dev Containers: Reopen in Container`（初回は `Open Folder in Container…`）。
 
 ## 共通ガイド
 
 ### 前提（どのテンプレでも共通）
 
 Windows に **WSL(Ubuntu)** ／ **コンテナエンジン（Docker か Podman）** ／ **VS Code ＋ Dev Containers 拡張** ／ **GitHub への SSH 鍵**。
+
+### Git の名前・鍵はコンテナに同梱しない（ホストから自動共有される）
+
+VS Code Dev Containers は、起動時に**ホストの `~/.gitconfig` をコンテナへ自動コピー**し、**ローカルの SSH エージェントを自動フォワード**する（HTTPS のクレデンシャルヘルパも共有）。そのため **git の名前/メールや SSH 鍵をテンプレに同梱する必要はない**——ホスト側（WSL）で一度設定しておけば、コンテナ内の git でもそのまま使える。
+
+ホスト側（WSL）で一度だけ行っておくと快適な git 設定：
+
+```bash
+git config --global user.name  "Your Name"
+git config --global user.email "you@example.com"
+git config --global init.defaultBranch main   # 新規リポジトリの既定ブランチ
+git config --global push.default current       # 引数なし push は現在ブランチを同名で送る
+git config --global fetch.prune true           # 削除済みリモートブランチの追跡を自動掃除
+```
 
 ### コンテナエンジン：Docker か Podman か
 
@@ -56,6 +54,7 @@ Windows に **WSL(Ubuntu)** ／ **コンテナエンジン（Docker か Podman�
 
 - WSL インストール（Microsoft）: https://learn.microsoft.com/windows/wsl/install
 - GitHub への SSH 接続: https://docs.github.com/authentication/connecting-to-github-with-ssh
+- Git 認証の共有（VS Code）: https://code.visualstudio.com/remote/advancedcontainers/sharing-git-credentials
 - Docker Desktop WSL 2 backend: https://docs.docker.com/desktop/features/wsl/
 - Podman（公式ドキュメント）: https://podman.io/docs
 - VS Code Dev Containers: https://code.visualstudio.com/docs/devcontainers/containers

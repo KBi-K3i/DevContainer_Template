@@ -25,7 +25,7 @@ python312/
 
 ## 使い方
 
-前提：WSL(Ubuntu) + Docker + VS Code（Dev Containers 拡張）＋ GitHub SSH。ホスト側の git / シェル設定は、リポジトリ直下の [`../gitconfig`](../gitconfig) / [`../bashrc`](../bashrc) を参照。
+前提：WSL(Ubuntu) + Docker + VS Code（Dev Containers 拡張）＋ GitHub SSH。git の名前/メールや SSH 鍵は**ホスト側（WSL）で一度設定**すれば、VS Code が起動時に `~/.gitconfig` をコンテナへ自動コピー・SSH エージェントを転送するので、コンテナ内の git でもそのまま使える（ホスト設定は、リポジトリ直下の [README](../README.md) 参照）。
 
 1. リポジトリを clone し、この `python312/` フォルダを VS Code で開く：
    ```bash
@@ -53,8 +53,4 @@ python312/
 
 ## 公式ガイド
 
-- WSL: https://learn.microsoft.com/windows/wsl/install
-- GitHub SSH: https://docs.github.com/authentication/connecting-to-github-with-ssh
-- Docker（WSL）: https://docs.docker.com/desktop/features/wsl/
-- Dev Containers: https://code.visualstudio.com/docs/devcontainers/containers
-- uv: https://docs.astral.sh/uv/
+リポジトリ直下 [README](../README.md) の「公式リファレンス」を参照。
