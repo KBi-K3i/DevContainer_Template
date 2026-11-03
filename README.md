@@ -14,7 +14,7 @@ clone して対象バージョンのフォルダ（例 `python312/`）を VS Cod
 
 ## 開くフォルダとビルドコンテキスト
 
-VS Code で開くのは**各テンプレのフォルダ**（例 `python312/`）。その中の `.devcontainer/` を VS Code が読み、`.devcontainer/Dockerfile` から **ビルドコンテキスト ＝ `python312/`** としてイメージを作り、`python312/` を `/workspace` にマウントしてコンテナへ入る。コマンドパレット（F1）→ `Dev Containers: Reopen in Container`（初回は `Open Folder in Container…`）。
+VS Code で開くのは**各テンプレのフォルダ**（例 `python312/`）。その中の `.devcontainer/` を VS Code が読み、`.devcontainer/Dockerfile` から **ビルドコンテキスト ＝ `.devcontainer/`（`devcontainer.json` に `context` を書いていないので既定＝`devcontainer.json` と同じ階層。`shell-rc.sh` もここから `COPY` される）** としてイメージを作り、開いたフォルダ `python312/` を `/workspace` にマウントしてコンテナへ入る。コマンドパレット（F1）→ `Dev Containers: Reopen in Container`（初回は `Open Folder in Container…`）。
 
 ## 共通ガイド
 
