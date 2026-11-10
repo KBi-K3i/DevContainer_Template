@@ -12,9 +12,14 @@ clone して対象バージョンのフォルダ（例 `python312/`）を VS Cod
 
 （将来 `python313/` など他バージョンを横に追加予定。各フォルダが自己完結したテンプレート。）
 
+## 使い方は2通り
+
+- **clone して使う**：このリポジトリを clone し、各テンプレのフォルダ（例 `python312/`）を VS Code で開いて「Reopen in Container」するだけ。すぐ環境が立つ。
+- **一から作る／仕組みを知る**：各テンプレの **`BUILD.md`**（例 [`python312/BUILD.md`](python312/BUILD.md)）に、ファイルを空から1つずつ作る手順と、各ファイルの意味をまとめてある。別バージョンを起こすときもこれをたどる。
+
 ## 開くフォルダとビルドコンテキスト
 
-VS Code で開くのは**各テンプレのフォルダ**（例 `python312/`）。その中の `.devcontainer/` を VS Code が読み、`.devcontainer/Dockerfile` から **ビルドコンテキスト ＝ `.devcontainer/`（`devcontainer.json` に `context` を書いていないので既定＝`devcontainer.json` と同じ階層。`shell-rc.sh` もここから `COPY` される）** としてイメージを作り、開いたフォルダ `python312/` を `/workspace` にマウントしてコンテナへ入る。コマンドパレット（F1）→ `Dev Containers: Reopen in Container`（初回は `Open Folder in Container…`）。
+VS Code で開くのは**各テンプレのフォルダ**（例 `python312/`）。その中の `.devcontainer/devcontainer.json` を VS Code が読み、`dockerComposeFile` で指定した **`.devcontainer/compose.yaml`** の `dev` サービスを起動する。`compose.yaml` は **`.devcontainer/Dockerfile` から（ビルドコンテキスト ＝ `.devcontainer/`。`shell-rc.sh` もここから `COPY` される）** イメージを作り、1つ上の**開いたフォルダ `python312/` を `/workspace` にマウント**する（`volumes: ..:/workspace:Z`。`:Z` は SELinux 環境＝RHEL 系向けの再ラベル付け）。メモリ上限やマウントは `compose.yaml` 側（`mem_limit`・`volumes`）が持つ。起動はコマンドパレット（F1）→ `Dev Containers: Reopen in Container`（初回は `Open Folder in Container…`）。
 
 ## 共通ガイド
 
@@ -63,4 +68,4 @@ git config --global fetch.prune true           # 削除済みリモートブラ�
 - devcontainer.json リファレンス: https://containers.dev/implementors/json_reference/
 - uv（Astral）: https://docs.astral.sh/uv/ ／ uv in Docker: https://docs.astral.sh/uv/guides/integration/docker/
 
-解説つきの詳しい構築手順は Qiita 記事（準備中）を参照。
+解説つきの構築手順は各テンプレの `BUILD.md`（例 [`python312/BUILD.md`](python312/BUILD.md)）。clone して使う解説記事は Qiita（準備中）。
