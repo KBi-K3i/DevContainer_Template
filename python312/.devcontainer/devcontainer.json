@@ -1,9 +1,8 @@
 {
   "name": "python-uv-devcontainer",
-  "build": { "dockerfile": "Dockerfile" },
-  "runArgs": ["--memory=16g"],
+  "dockerComposeFile": "compose.yaml",
+  "service": "dev",
   "workspaceFolder": "/workspace",
-  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",
   "customizations": {
     "vscode": {
       "extensions": [
