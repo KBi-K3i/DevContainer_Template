@@ -1,6 +1,9 @@
 FROM python:3.12-slim
 
-# OSツール（git/ssh/curl/証明書）＋ SQLite CLI ＋ TZ/ロケール素材 ＋ bash 補完、日本語ロケール生成
+# apt を非対話に（ビルド時だけ・ENV にしない＝最終イメージに残さない）
+ARG DEBIAN_FRONTEND=noninteractive
+
+# OSツール（git/ssh/curl/証明書）＋ SQLite CLI ＋ TZ/ロケール素材 ＋ bash 補完 ＋ AI/開発補助CLI（rg/jq/sd）、日本語ロケール生成
 RUN apt-get update \
  && apt-get install -y --no-install-recommends \
       git \
@@ -11,6 +14,9 @@ RUN apt-get update \
       tzdata \
       locales \
       bash-completion \
+      ripgrep \
+      jq \
+      sd \
  && sed -i '/ja_JP.UTF-8/ s/^# //' /etc/locale.gen \
  && locale-gen \
  && rm -rf /var/lib/apt/lists/*

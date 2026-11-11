@@ -36,7 +36,7 @@
     "**/.pytest_cache/**": true
   },
 
-  // --- スペルチェック（cSpell）の設定は repo 直下の cspell.json に外出し ---
+  // --- スペルチェック（cSpell）の設定は .vscode/cspell.json に外出し ---
 
   // --- errorlens / markdownlint / autoDocstring ---
   "errorLens.enabledDiagnosticLevels": ["error", "warning", "info"],
@@ -75,7 +75,7 @@
   },
 
   // --- commit-message-editor（Conventional Commits を網羅） ---
-  "commit-message-editor.view.defaultType": "form",
+  "commit-message-editor.view.defaultView": "form",
   "commit-message-editor.view.showRecentCommits": true,
   "commit-message-editor.tokens": [
     {

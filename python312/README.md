@@ -14,12 +14,12 @@ python312/
 │   └── shell-rc.sh         # コンテナのシェル設定（alias ＋ git ブランチ表示プロンプト。Dockerfile が /etc/bash.bashrc へ追記）
 ├── .vscode/
 │   ├── settings.json       # Pylance strict・Ruff 既定フォーマッタ・検索除外・インデント色 ほか
-│   └── launch.json         # デバッグ構成（現在のファイル / pytest）
+│   ├── launch.json         # デバッグ構成（現在のファイル / pytest）
+│   ├── cspell.json         # スペルチェック辞書（cSpell は .vscode/ も探索・＋ project-words.txt）
+│   └── project-words.txt
 ├── pyproject.toml          # 依存・ツール設定（uv / Ruff / mypy / pytest）
 ├── .gitignore
 ├── .editorconfig
-├── cspell.json             # スペルチェック辞書（＋ project-words.txt）
-├── project-words.txt
 └── software_test/          # テスト（unit / integration）
     ├── unit/
     └── integration/
@@ -42,6 +42,16 @@ python312/
 これで、エディタ・拡張・ターミナル・Python インタプリタがすべてコンテナの中で動く。
 
 > **一から作る手順**は [BUILD.md](BUILD.md)（ファイルを空から1つずつ作って解説）。
+
+## 複数リポジトリ／ブランチを1つの環境で扱う（A / B / C）
+
+「環境」はこのテンプレが焼くイメージ（Python 3.12＋uv＋ツール）で固定され、依存は uv が各リポジトリの `pyproject.toml` の隣に `.venv` を作る（プロジェクト単位・キャッシュ `~/.cache/uv` は共有）。だから「環境は統一・リポジトリは別」を両立できる。
+
+- **A（隔離）**：各リポジトリに `.devcontainer/` を置き、別コンテナで開く。リポジトリごとに独立。Python 版やサービス構成が枝分かれしうるならこれ。
+- **B（横断）**：マウント先を版フォルダ単体でなく**親ディレクトリ**（例 `~/src`）へ向け、その中へ複数リポジトリを `git clone` して並べる。`devcontainer.json` の `workspaceFolder`/`workspaceMount`（compose なら `volumes`）が `/workspace` を結ぶ先を**親へ変える1か所**で B になる。各リポジトリで `uv sync`。分けたくなったら A へ。
+- **C（同一リポジトリの複数ブランチ）**：`git worktree add ../feature-x feature-x` で、1つの clone から複数ブランチを別フォルダに同時チェックアウト。
+
+> **`uv init` は要る？** 「clone してすぐ使える・手作業不要」の本線では不要。各リポジトリが `pyproject.toml`（＋`uv.lock`）を**同梱して配られ、clone 後は `uv sync` だけ**で揃う（`uv init` は初期化済みの既存リポジトリにはエラーになる）。`uv init` は**新規にプロジェクトを起こすとき**の足場生成に使い、作ったら commit すれば以後は「clone してすぐ」になる。生成物は uv の版で変わる（既定 build-backend＝`uv_build`／src レイアウト等）ので、決まった形を確実に配りたい足場は init 任せにせず**同梱（コミット）する**のがこのテンプレの方針。
 
 ## メモリ上限
 

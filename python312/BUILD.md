@@ -17,12 +17,12 @@ python312/
 │   └── shell-rc.sh         # コンテナ内シェルの alias／git ブランチ表示
 ├── .vscode/
 │   ├── settings.json       # 型チェック・整形・除外・UI など
-│   └── launch.json         # デバッグ構成
+│   ├── launch.json         # デバッグ構成
+│   ├── cspell.json         # スペルチェック設定（cSpell は .vscode/ も探索）
+│   └── project-words.txt   # 専用辞書
 ├── pyproject.toml          # 依存とツール設定（uv／Ruff／mypy／pytest）
 ├── .gitignore
 ├── .editorconfig
-├── cspell.json             # スペルチェック設定
-├── project-words.txt       # 専用辞書
 ├── AGENTS.md               # AI 開発ツール向けの共通コンテキスト
 ├── CLAUDE.md               # AGENTS.md への入口
 └── software_test/          # テスト（unit / integration）
@@ -277,7 +277,7 @@ VS Code に「どのコンテナを、どう開き、何を入れるか」を伝
     "**/.pytest_cache/**": true
   },
 
-  // --- スペルチェック（cSpell）の設定は repo 直下の cspell.json に外出し ---
+  // --- スペルチェック（cSpell）の設定は .vscode/cspell.json に外出し ---
 
   // --- errorlens / markdownlint / autoDocstring ---
   "errorLens.enabledDiagnosticLevels": ["error", "warning", "info"],
@@ -477,9 +477,9 @@ trim_trailing_whitespace = false
 - **`[*.{yml,yaml,json,jsonc,toml}]`**：設定ファイル系はインデント2（浅いほうが読みやすい慣習）。
 - **`[*.md]`**：Markdown だけ行末空白を削らない（行末の半角スペース2つが「改行」の意味を持つため）。
 
-### 4.3 `cspell.json` と `project-words.txt`
+### 4.3 `.vscode/cspell.json` と `project-words.txt`
 
-英単語のスペルチェック（Code Spell Checker 拡張）の設定と、その専用辞書です。
+英単語のスペルチェック（Code Spell Checker 拡張）の設定と、その専用辞書です。cSpell は設定ファイルを、版フォルダ直下の `cspell.json` → `.vscode/cspell.json` → `.config/cspell.json` の順で探すので、`settings.json`・`launch.json` と同じ **`.vscode/`** に置きます（辞書 `project-words.txt` も隣に置けば `path` は `./project-words.txt` のままでよい）。
 
 ```jsonc
 {
